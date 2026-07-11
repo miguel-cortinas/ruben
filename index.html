@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="¡Estás invitado! Rubén celebra sus 20 años. Una noche que no olvidarás.">
+  <title>Rubén · 20 · Birthday</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rubén cumple 20 — Estás invitado">
+  <meta property="og:description" content="Una noche distinta. Te esperamos.">
+  <meta property="og:locale" content="es_MX">
+
+  <!-- Fonts: Anton (display) + Space Grotesk (body/labels) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet">
+  </noscript>
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+       DESIGN TOKENS — Editorial Brutalism
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --ink: #0a0a0a;
+      --ink-soft: #1a1a1a;
+      --red: #3B00FF;
+      --red-deep: #1A00FF;
+      --white: #FFFFFF;
+      --paper: #F5F0E8;
+      --paper-2: #EDE8DE;
+      --silver: #B8B8B8;
+
+      --font-display: 'Anton', sans-serif;
+      --font-label: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+
+      /* Shadow system */
+      --sh-xs: 2px 2px 0 var(--ink);
+      --sh-sm: 3px 3px 0 var(--ink);
+      --sh-md: 5px 5px 0 var(--ink);
+      --sh-lg: 8px 8px 0 var(--ink);
+      --sh-xl: 12px 12px 0 var(--ink);
+
+      /* Border */
+      --border: 2px solid var(--ink);
+      --border-thick: 3px solid var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--ink);
+      font-family: var(--font-body);
+      height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      /* se revela por JS una vez calculada la escala, evita el "salto" inicial */
+    }
+
+    /* ═══════════════════════════════════════════════════
+       POSTER — the invitation card
+    ═══════════════════════════════════════════════════ */
+    .poster {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: hidden;
+      flex-shrink: 0;
+      transform-origin: center center;
+      /* Subtle paper texture */
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    @media (min-width: 480px) {
+      .poster {
+        border: var(--border-thick);
+        box-shadow: var(--sh-xl), 0 24px 80px rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HEADER BAND — thick red stripe with label
+    ═══════════════════════════════════════════════════ */
+    .header-band {
+      background: var(--red);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 16px;
+      border-bottom: var(--border-thick);
+    }
+
+    .header-band-label {
+      font-family: var(--font-label);
+      font-size: clamp(10px, 2.8vw, 13px);
+      letter-spacing: 3px;
+      color: var(--white);
+      opacity: 0.9;
+      text-transform: uppercase;
+    }
+
+    .header-band-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .header-band-dots span {
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--white);
+      opacity: 0.5;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HERO ROW — Globo "20" centrado
+    ═══════════════════════════════════════════════════ */
+    .hero-row {
+      position: relative;
+      width: 100%;
+      padding: 4px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      background: var(--paper);
+      border-bottom: var(--border-thick);
+      overflow: visible;
+      z-index: 2;
+    }
+
+    .hero-disco {
+      width: clamp(48px, 15vw, 78px);
+      height: clamp(48px, 15vw, 78px);
+      flex-shrink: 0;
+    }
+
+    .hero-disco svg,
+    .hero-disco canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .hero-balloon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-balloon-img {
+      display: block;
+      width: auto;
+      height: clamp(60px, 18vw, 92px);
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       COLLAGE — overlapping photos, editorial stack
+    ═══════════════════════════════════════════════════ */
+    .collage-section {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 6px 0;
+      border-bottom: var(--border-thick);
+      overflow: visible;
+      z-index: 10;
+      background: var(--paper-2);
+    }
+
+    /* Star texture layer behind photos */
+    .star-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .float-star {
+      position: absolute;
+      height: auto;
+      transition: opacity 0.9s ease;
+    }
+
+    /* ── Photo positioning: single combined image ── */
+    .photo-centro {
+      position: relative;
+      width: clamp(290px, 96vw, 418px);
+      height: auto;
+      z-index: 20;
+      cursor: default;
+    }
+
+    .photo-centro img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HERO TEXT SECTION — "BIRTHDAY"
+    ═══════════════════════════════════════════════════ */
+    .hero-text-section {
+      width: 100%;
+      background: var(--paper);
+      padding: 16px 20px 0;
+      border-bottom: var(--border-thick);
+      position: relative;
+      z-index: 5;
+    }
+
+    .its-my-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2px;
+    }
+
+    .its-my-label {
+      font-family: var(--font-label);
+      font-size: clamp(13px, 3.5vw, 17px);
+      letter-spacing: 5px;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .its-my-rule {
+      flex: 1;
+      height: 2px;
+      background: var(--ink);
+    }
+
+    .its-my-star {
+      color: var(--red);
+      font-size: 1.3em;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    .birthday-display {
+      font-family: var(--font-display);
+      font-size: clamp(62px, 18vw, 98px);
+      line-height: 0.88;
+      color: var(--ink);
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      display: block;
+      text-align: center;
+    }
+
+    /* Red underline bar */
+    .birthday-underline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 10px;
+    }
+
+    .birthday-underline .bu-thick {
+      height: 5px;
+      background: var(--red);
+      flex: 3;
+      box-shadow: var(--sh-xs);
+    }
+
+    .birthday-underline .bu-thin {
+      height: 5px;
+      background: var(--ink);
+      flex: 1;
+    }
+
+    .subtitle-line {
+      font-family: var(--font-body);
+      font-size: clamp(10px, 2.8vw, 12px);
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      color: var(--ink);
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 8px;
+      padding-bottom: 14px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       EVENT INFO BLOCK — editorial layout
+    ═══════════════════════════════════════════════════ */
+    .event-block {
+      width: 100%;
+      background: var(--paper);
+      padding: 0;
+    }
+
+    /* Large date row */
+    .event-date-row {
+      display: flex;
+      align-items: stretch;
+      border-bottom: var(--border);
+    }
+
+    .event-date-main {
+      flex: 1;
+      padding: 14px 18px;
+      border-right: var(--border);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+      min-height: 96px;
+    }
+
+    .event-label-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .event-date-label,
+    .event-time-label,
+    .event-address-label,
+    .event-dresscode-label {
+      font-family: var(--font-label);
+      font-size: clamp(8px, 2.2vw, 10px);
+      letter-spacing: 3px;
+      color: var(--ink);
+      opacity: 0.45;
+    }
+
+    .cell-icon {
+      flex-shrink: 0;
+      color: var(--red);
+      opacity: 0.8;
+    }
+
+    .event-date-value {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 7.8vw, 36px);
+      line-height: 0.95;
+      color: var(--ink);
+      letter-spacing: -1px;
+      white-space: nowrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .event-date-value .red-accent {
+      color: var(--red);
+    }
+
+    .event-time-col {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 6px;
+      min-width: clamp(90px, 24vw, 116px);
+      position: relative;
+      overflow: hidden;
+      min-height: 96px;
+    }
+
+    .event-time-value {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 6.5vw, 36px);
+      line-height: 0.9;
+      color: var(--red);
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Address + dresscode row */
+    .event-bottom-row {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .event-address-col {
+      flex: 1;
+      padding: 14px 18px;
+      border-right: var(--border);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+      min-height: 92px;
+    }
+
+    .event-address-label {
+      align-self: center;
+    }
+
+    .event-address-value {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 3.8vw, 17px);
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--ink);
+      position: relative;
+      z-index: 2;
+    }
+
+    .event-dresscode-col {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      min-width: clamp(90px, 24vw, 116px);
+      position: relative;
+      min-height: 92px;
+    }
+
+    .event-dresscode-value {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 3.4vw, 16px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-maps {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--red);
+      color: var(--white);
+      font-family: var(--font-label);
+      font-size: clamp(10px, 2.8vw, 12px);
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: var(--border);
+      box-shadow: var(--sh-sm);
+      margin-top: 10px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-maps:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: var(--sh-md);
+    }
+
+    .btn-maps:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       FOOTER BAND
+    ═══════════════════════════════════════════════════ */
+    .footer-band {
+      background: var(--ink);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+    }
+
+    .footer-name {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 8vw, 40px);
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .footer-name span {
+      color: var(--red);
+    }
+
+    .footer-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .footer-age {
+      font-family: var(--font-label);
+      font-size: clamp(9px, 2.5vw, 12px);
+      letter-spacing: 3px;
+      color: var(--white);
+      opacity: 0.5;
+    }
+
+    .footer-year {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 6.5vw, 34px);
+      line-height: 0.9;
+      color: var(--red);
+      letter-spacing: -1px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       LIFE — entrance choreography + idle motion
+    ═══════════════════════════════════════════════════ */
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1.04);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes spinSlow {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes dotPulse {
+
+      0%,
+      100% {
+        opacity: 0.35;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 0.25;
+      }
+    }
+
+    .header-band,
+    .hero-row,
+    .collage-section,
+    .hero-text-section,
+    .event-block,
+    .footer-band {
+      animation: riseIn 0.6s cubic-bezier(.2, .7, .3, 1) both;
+    }
+
+    .header-band {
+      animation-delay: 0s;
+    }
+
+    .hero-row {
+      animation-delay: .08s;
+    }
+
+    .collage-section {
+      animation-delay: .16s;
+    }
+
+    .hero-text-section {
+      animation-delay: .24s;
+    }
+
+    .event-block {
+      animation-delay: .32s;
+    }
+
+    .footer-band {
+      animation-delay: .4s;
+    }
+
+    .hero-balloon-wrap {
+      animation: popIn 0.7s .1s cubic-bezier(.25, 1.4, .4, 1) both;
+    }
+
+    .header-band-dots span:nth-child(1) {
+      animation: dotPulse 1.8s ease-in-out infinite;
+    }
+
+    .header-band-dots span:nth-child(2) {
+      animation: dotPulse 1.8s ease-in-out infinite .3s;
+    }
+
+    .header-band-dots span:nth-child(3) {
+      animation: dotPulse 1.8s ease-in-out infinite .6s;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       REDUCED MOTION
+    ═══════════════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="poster" role="main" aria-label="Invitación de cumpleaños de Rubén">
+
+    <!-- ░░ HEADER BAND ░░ -->
+    <div class="header-band" aria-hidden="true">
+      <span class="header-band-label">Invitación Especial</span>
+      <div class="header-band-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- ░░ HERO ROW — Globo "20" con disco balls ░░ -->
+    <div class="hero-row" aria-hidden="true">
+      <div class="hero-disco" id="discoLeft"></div>
+      <div class="hero-balloon-wrap">
+        <img class="hero-balloon-img" src="img/globos.png" alt="Globo número 20" loading="eager">
+      </div>
+      <div class="hero-disco" id="discoRight"></div>
+    </div>
+
+    <!-- ░░ COLLAGE SECTION ░░ -->
+    <div class="collage-section" role="img" aria-label="Collage de fotos de Rubén">
+
+      <!-- Estrellas flotantes: JS las reubica y desvanece/aparece en otros puntos -->
+      <div class="star-field" id="starField" aria-hidden="true">
+        <svg class="float-star" data-variant="0" style="top:4%; left:8%; width:26px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" stroke="#0a0a0a"
+            stroke-width="1" />
+        </svg>
+        <svg class="float-star" data-variant="1" style="top:2%; left:60%; width:16px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" opacity=".65" />
+        </svg>
+        <svg class="float-star" data-variant="0" style="top:10%; left:82%; width:30px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" stroke="#0a0a0a"
+            stroke-width="1" />
+        </svg>
+        <svg class="float-star" data-variant="2" style="top:22%; left:2%; width:18px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#0a0a0a" opacity=".25" />
+        </svg>
+        <svg class="float-star" data-variant="1" style="top:34%; left:93%; width:14px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" opacity=".55" />
+        </svg>
+        <svg class="float-star" data-variant="0" style="top:46%; left:5%; width:28px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" stroke="#0a0a0a"
+            stroke-width="1" />
+        </svg>
+        <svg class="float-star" data-variant="1" style="top:56%; left:90%; width:20px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" opacity=".6" />
+        </svg>
+        <svg class="float-star" data-variant="2" style="top:70%; left:1%; width:16px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#0a0a0a" opacity=".2" />
+        </svg>
+        <svg class="float-star" data-variant="0" style="top:80%; left:88%; width:26px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" stroke="#0a0a0a"
+            stroke-width="1" />
+        </svg>
+        <svg class="float-star" data-variant="1" style="top:92%; left:12%; width:12px;" viewBox="0 0 24 24">
+          <path d="M12 1 l3 8 8.5 0 -6.9 5 2.6 8.3L12 17 4.8 22.3 7.4 14 .5 9 9 9z" fill="#3B00FF" opacity=".5" />
+        </svg>
+      </div>
+
+
+      <!-- ★ Centro Collage Image -->
+      <div class="photo-centro">
+        <img class="parallax-layer" data-speed="0.6" src="img/centro.png" alt="Rubén Collage" loading="eager">
+      </div>
+
+    </div><!-- /collage-section -->
+
+    <!-- ░░ HERO TEXT: IT'S MY BIRTHDAY ░░ -->
+    <div class="hero-text-section">
+      <div class="its-my-line" aria-hidden="true">
+        <div class="its-my-rule"></div>
+        <span class="its-my-label">IT'S MY</span>
+        <span class="its-my-star">✱</span>
+        <div class="its-my-rule"></div>
+      </div>
+      <h1 class="birthday-display">BIRTHDAY</h1>
+      <div class="birthday-underline" aria-hidden="true">
+        <div class="bu-thick"></div>
+        <div class="bu-thin"></div>
+      </div>
+      <p class="subtitle-line">Te invito a mi fiesta de cumpleaños</p>
+    </div>
+
+    <!-- ░░ EVENT BLOCK ░░ -->
+    <!--
+      ╔══════════════════════════════════════╗
+      ║  EDITAR AQUÍ: datos del evento       ║
+      ╚══════════════════════════════════════╝
+    -->
+    <div class="event-block">
+      <!-- Date + Time -->
+      <div class="event-date-row">
+        <div class="event-date-main">
+          <div class="event-label-row">
+            <div class="event-date-label">Fecha</div>
+            <svg class="cell-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <div class="event-date-value">
+            <span class="red-accent">24</span>&nbsp;DE&nbsp;JULIO
+          </div>
+        </div>
+        <div class="event-time-col">
+          <div class="event-label-row" style="width:100%;">
+            <div class="event-time-label">Hora</div>
+            <svg class="cell-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div class="event-time-value" style="font-size: clamp(18px, 5.5vw, 28px); line-height: 1.05;">4:00 PM<br><span
+              style="color:var(--ink); opacity:0.5; font-size: 0.65em;">a</span> 10:00 PM</div>
+        </div>
+      </div>
+
+      <!-- Address + Regalos -->
+      <div class="event-bottom-row">
+        <div class="event-address-col">
+          <div class="event-label-row">
+            <div class="event-address-label">Ubicación</div>
+            <svg class="cell-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <div class="event-address-value">
+            Granja Las Flechas
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=28.684138875636613,-106.02365822449732"
+            target="_blank" rel="noopener" class="btn-maps">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            ABRIR MAPA
+          </a>
+        </div>
+        <div class="event-dresscode-col">
+          <div class="event-label-row" style="width:100%;">
+            <div class="event-dresscode-label">Regalos</div>
+            <svg class="cell-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 12 20 22 4 22 4 12"></polyline>
+              <rect x="2" y="7" width="20" height="5"></rect>
+              <line x1="12" y1="22" x2="12" y2="7"></line>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+            </svg>
+          </div>
+          <div class="event-dresscode-value">
+            LLUVIA DE<br>SOBRES
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ░░ FOOTER BAND ░░ -->
+    <div class="footer-band" aria-hidden="true">
+      <div class="footer-name">RUBÉN<span>.</span></div>
+      <div class="footer-badge">
+        <span class="footer-age">CUMPLE</span>
+        <span class="footer-year">20</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Escala la invitación completa para que quepa en una sola pantalla, sin scroll -->
+  <script>
+    (function () {
+      var poster = document.querySelector('.poster');
+
+      function fitPoster() {
+        // Mide el tamaño natural (sin escala) para calcular el factor correcto
+        poster.style.transform = 'none';
+        var naturalW = poster.offsetWidth;
+        var naturalH = poster.offsetHeight;
+        if (!naturalW || !naturalH) return;
+
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var pad = 0.97; // pequeño respiro contra los bordes de la pantalla
+        var scale = Math.min((vw * pad) / naturalW, (vh * pad) / naturalH, 1);
+
+        poster.style.transform = 'scale(' + scale + ')';
+        document.body.style.visibility = 'visible';
+      }
+
+      if (document.readyState === 'complete') {
+        fitPoster();
+      } else {
+        window.addEventListener('load', fitPoster);
+      }
+
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(fitPoster, 120);
+      });
+      window.addEventListener('orientationchange', function () {
+        setTimeout(fitPoster, 200);
+      });
+
+      // Failsafe: si algo falla, mostrar de todas formas
+      setTimeout(function () { document.body.style.visibility = 'visible'; }, 1500);
+    })();
+  </script>
+
+  <!-- Lottie-web para animar las disco balls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof lottie === 'undefined') return;
+      var config = {
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/discoball.json'
+      };
+      lottie.loadAnimation(Object.assign({ container: document.getElementById('discoLeft') }, config));
+      lottie.loadAnimation(Object.assign({ container: document.getElementById('discoRight') }, config));
+    });
+  </script>
+
+  <!-- Estrellas que se desvanecen y reaparecen solo en zonas vacías de la imagen -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      var stars = document.querySelectorAll('#starField .float-star');
+      var section = document.querySelector('.collage-section');
+      var photoImg = document.querySelector('.photo-centro img');
+      var opacityByVariant = { 0: 1, 1: 0.6, 2: 0.22 };
+      var sizeRange = [12, 32];
+      var rand = function (min, max) { return Math.random() * (max - min) + min; };
+
+      // ── Muestrea el canal alfa del PNG para saber dónde está "vacío" ──
+      var safeFractions = null; // [{x:0-1, y:0-1}, ...] relativo a la imagen
+
+      function buildSafeZones() {
+        try {
+          var GRID_W = 64;
+          var ratio = photoImg.naturalHeight / photoImg.naturalWidth;
+          var GRID_H = Math.max(1, Math.round(GRID_W * ratio));
+          var canvas = document.createElement('canvas');
+          canvas.width = GRID_W;
+          canvas.height = GRID_H;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(photoImg, 0, 0, GRID_W, GRID_H);
+          var data = ctx.getImageData(0, 0, GRID_W, GRID_H).data;
+
+          var pts = [];
+          for (var y = 0; y < GRID_H; y++) {
+            for (var x = 0; x < GRID_W; x++) {
+              var alpha = data[(y * GRID_W + x) * 4 + 3];
+              if (alpha < 8) {
+                pts.push({ x: x / GRID_W, y: y / GRID_H });
+              }
+            }
+          }
+          if (pts.length > 20) safeFractions = pts;
+        } catch (err) {
+          // Canvas "tainted" (p.ej. abierto como archivo local sin servidor):
+          // seguimos con el modo de respaldo por márgenes.
+          safeFractions = null;
+        }
+      }
+
+      if (photoImg.complete && photoImg.naturalWidth) {
+        buildSafeZones();
+      } else {
+        photoImg.addEventListener('load', buildSafeZones);
+      }
+
+      // Convierte una fracción (0-1) dentro de la imagen a % dentro de collage-section
+      function imageFractionToSectionPercent(fx, fy) {
+        var sectionRect = section.getBoundingClientRect();
+        var photoRect = photoImg.getBoundingClientRect();
+        var px = photoRect.left - sectionRect.left + fx * photoRect.width;
+        var py = photoRect.top - sectionRect.top + fy * photoRect.height;
+        return {
+          left: (px / sectionRect.width) * 100,
+          top: (py / sectionRect.height) * 100
+        };
+      }
+
+      function pickPosition() {
+        if (safeFractions && safeFractions.length) {
+          var p = safeFractions[Math.floor(rand(0, safeFractions.length))];
+          // pequeño jitter para que no se vea como una grilla
+          var jitter = 1 / 64;
+          var fx = Math.min(1, Math.max(0, p.x + rand(-jitter, jitter)));
+          var fy = Math.min(1, Math.max(0, p.y + rand(-jitter, jitter)));
+          return imageFractionToSectionPercent(fx, fy);
+        }
+        // Respaldo: bandas de margen, sin depender del canvas
+        var edge = Math.floor(rand(0, 4));
+        if (edge === 0) return { top: rand(1, 10), left: rand(1, 96) };
+        if (edge === 1) return { top: rand(88, 98), left: rand(1, 96) };
+        if (edge === 2) return { top: rand(10, 88), left: rand(1, 8) };
+        return { top: rand(10, 88), left: rand(90, 97) };
+      }
+
+      stars.forEach(function (star, i) {
+        var variant = star.getAttribute('data-variant') || '0';
+        var maxOpacity = opacityByVariant[variant];
+
+        function cycle() {
+          // Desvanece
+          star.style.opacity = '0';
+          setTimeout(function () {
+            // Reubica y cambia tamaño mientras es invisible
+            var pos = pickPosition();
+            star.style.top = pos.top.toFixed(1) + '%';
+            star.style.left = pos.left.toFixed(1) + '%';
+            star.style.width = rand(sizeRange[0], sizeRange[1]).toFixed(0) + 'px';
+            // Reaparece
+            requestAnimationFrame(function () {
+              star.style.opacity = String(maxOpacity);
+            });
+            // Programa el siguiente ciclo
+            setTimeout(cycle, rand(2200, 4200));
+          }, 900);
+        }
+
+        // Arranque escalonado para que no todas cambien a la vez
+        setTimeout(cycle, rand(800, 4500) + i * 250);
+      });
+    });
+  </script>
+</body>
+
+</html>
