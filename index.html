@@ -138,16 +138,19 @@
       background: var(--paper);
       color: var(--ink);
       font-family: var(--font-body);
-      height: 100dvh;
-      width: 100vw;
-      overflow: hidden;
+      min-height: 100dvh;
+      width: 100%;
+      overflow-x: hidden;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       opacity: 0;
       transition: opacity 0.35s ease;
-      /* se revela por JS una vez calculada la escala, evita el "salto" inicial;
-         fondo beige (no negro) + fade de opacity en vez de corte duro */
+      /* se revela por JS, evita el "salto" inicial; fondo beige (no negro)
+         + fade de opacity en vez de corte duro. La tarjeta ahora llena
+         siempre el ancho completo de la pantalla (ver .poster) y, si el
+         contenido es más alto que el viewport, la página simplemente
+         hace scroll — así nunca quedan franjas vacías a los lados. */
     }
 
     body.is-ready {
@@ -1033,10 +1036,11 @@
 
   </main>
 
-  <!-- Escala la invitación completa para que quepa en una sola pantalla, sin scroll -->
+  <!-- Revela la invitación con fade-in. La tarjeta llena el 100% del ancho
+       de forma nativa (CSS), sin necesidad de escalarla con JS — así nunca
+       quedan franjas vacías a los lados en ningún tamaño de pantalla. -->
   <script>
     (function () {
-      var poster = document.querySelector('.poster');
       var loader = document.getElementById('bootLoader');
 
       function reveal() {
@@ -1044,36 +1048,11 @@
         if (loader) loader.classList.add('is-hidden');
       }
 
-      function fitPoster() {
-        // Mide el tamaño natural (sin escala) para calcular el factor correcto
-        poster.style.transform = 'none';
-        var naturalW = poster.offsetWidth;
-        var naturalH = poster.offsetHeight;
-        if (!naturalW || !naturalH) return;
-
-        var vw = window.innerWidth;
-        var vh = window.innerHeight;
-        var pad = 0.97; // pequeño respiro contra los bordes de la pantalla
-        var scale = Math.min((vw * pad) / naturalW, (vh * pad) / naturalH, 1);
-
-        poster.style.transform = 'scale(' + scale + ')';
-        reveal();
-      }
-
       if (document.readyState === 'complete') {
-        fitPoster();
+        reveal();
       } else {
-        window.addEventListener('load', fitPoster);
+        window.addEventListener('load', reveal);
       }
-
-      var resizeTimer;
-      window.addEventListener('resize', function () {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(fitPoster, 120);
-      });
-      window.addEventListener('orientationchange', function () {
-        setTimeout(fitPoster, 200);
-      });
 
       // Failsafe: si algo falla, mostrar de todas formas
       setTimeout(reveal, 1500);
