@@ -367,22 +367,26 @@
       height: auto;
       transform-origin: center;
       transition: opacity 1s cubic-bezier(.4, 0, .2, 1);
-      /* Pulso idle continuo (solo transform) — no compite con el opacity que
+      /* Pulso idle continuo (transform + filter) — no compite con el opacity que
          controla el JS al reubicar/desvanecer, son propiedades distintas */
       animation: starPulse 2.6s ease-in-out infinite;
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, .55)) drop-shadow(2px 2px 0 var(--ink));
     }
 
-    /* Hero (variant 0): la más grande y brillante — pulso lento con giro leve,
-       como si atrapara la luz. Es la única capa que usa el acento morado-azul. */
+    /* Hero (variant 0): la más grande y brillante — pulso lento con giro leve
+       y un halo de neón morado-azul, como si atrapara la luz. Es la única
+       capa que usa el acento morado-azul. */
     .float-star[data-variant="0"] {
       animation: starPulseHero 4.2s ease-in-out infinite;
       transition-duration: 1.2s;
     }
 
-    /* Dust (variant 2): textura de fondo — pulso rápido y casi imperceptible */
+    /* Dust (variant 2): textura de fondo — pulso rápido, casi imperceptible,
+       con un halo suave para que no se pierda contra el papel */
     .float-star[data-variant="2"] {
-      animation-duration: 1.8s;
+      animation: starPulseDust 1.8s ease-in-out infinite;
       transition-duration: 0.6s;
+      filter: drop-shadow(0 0 3px rgba(255, 255, 255, .85));
     }
 
     /* ── Photo positioning: single combined image ── */
@@ -826,11 +830,13 @@
 
       0%,
       100% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 1px rgba(255, 255, 255, .5)) drop-shadow(2px 2px 0 var(--ink));
       }
 
       50% {
-        transform: scale(1.08);
+        transform: scale(1.14) rotate(-5deg);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, .95)) drop-shadow(2px 2px 0 var(--ink));
       }
     }
 
@@ -839,10 +845,26 @@
       0%,
       100% {
         transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, .7)) drop-shadow(0 0 8px rgba(59, 0, 255, .55)) drop-shadow(3px 3px 0 var(--ink));
       }
 
       50% {
-        transform: scale(1.1) rotate(3deg);
+        transform: scale(1.2) rotate(8deg);
+        filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 18px rgba(59, 0, 255, .9)) drop-shadow(3px 3px 0 var(--ink));
+      }
+    }
+
+    @keyframes starPulseDust {
+
+      0%,
+      100% {
+        transform: scale(.85) rotate(0deg);
+        filter: drop-shadow(0 0 1px rgba(255, 255, 255, .6));
+      }
+
+      50% {
+        transform: scale(1.25) rotate(20deg);
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1));
       }
     }
 
@@ -994,39 +1016,49 @@
 
       <!-- Estrellas flotantes: JS las reubica y desvanece/aparece en otros puntos -->
       <div class="star-field" id="starField" aria-hidden="true">
-        <svg class="float-star" data-variant="0" style="top:4%; left:8%; width:30px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#3B00FF"
-            stroke="#0a0a0a" stroke-width="1" />
+        <svg class="float-star" data-variant="0" style="top:1%; left:4%; width:22px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#3B00FF" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round" />
         </svg>
-        <svg class="float-star" data-variant="1" style="top:2%; left:60%; width:16px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#0a0a0a" />
+        <svg class="float-star" data-variant="1" style="top:0%; left:24%; width:15px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#0a0a0a" />
         </svg>
-        <svg class="float-star" data-variant="0" style="top:10%; left:82%; width:34px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#3B00FF"
-            stroke="#0a0a0a" stroke-width="1" />
+        <svg class="float-star" data-variant="0" style="top:2%; left:42%; width:20px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#3B00FF" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round" />
         </svg>
-        <svg class="float-star" data-variant="2" style="top:22%; left:2%; width:11px;" viewBox="0 0 24 24">
+        <svg class="float-star" data-variant="2" style="top:4%; left:60%; width:10px;" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="3.4" fill="#0a0a0a" />
         </svg>
-        <svg class="float-star" data-variant="1" style="top:34%; left:93%; width:15px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#0a0a0a" />
+        <svg class="float-star" data-variant="1" style="top:1%; left:74%; width:14px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#0a0a0a" />
         </svg>
-        <svg class="float-star" data-variant="0" style="top:46%; left:5%; width:32px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#3B00FF"
-            stroke="#0a0a0a" stroke-width="1" />
+        <svg class="float-star" data-variant="0" style="top:3%; left:90%; width:18px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#3B00FF" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round" />
         </svg>
-        <svg class="float-star" data-variant="1" style="top:56%; left:90%; width:20px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#0a0a0a" />
-        </svg>
-        <svg class="float-star" data-variant="2" style="top:70%; left:1%; width:9px;" viewBox="0 0 24 24">
+        <svg class="float-star" data-variant="2" style="top:20%; left:1%; width:9px;" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="3.4" fill="#0a0a0a" />
         </svg>
-        <svg class="float-star" data-variant="0" style="top:80%; left:88%; width:28px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#3B00FF"
-            stroke="#0a0a0a" stroke-width="1" />
+        <svg class="float-star" data-variant="1" style="top:38%; left:96%; width:12px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#0a0a0a" />
         </svg>
-        <svg class="float-star" data-variant="1" style="top:92%; left:12%; width:13px;" viewBox="0 0 24 24">
-          <path d="M12 0C12 6 14 10 18 12C14 14 12 18 12 24C12 18 10 14 6 12C10 10 12 6 12 0Z" fill="#0a0a0a" />
+        <svg class="float-star" data-variant="2" style="top:55%; left:2%; width:8px;" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3.4" fill="#0a0a0a" />
+        </svg>
+        <svg class="float-star" data-variant="1" style="top:70%; left:95%; width:11px;" viewBox="0 0 24 24">
+          <path
+            d="M14 6L15.8 11.53L21.61 11.53L16.91 14.95L18.7 20.47L14 17.06L9.3 20.47L11.09 14.95L6.39 11.53L12.2 11.53Z"
+            fill="#0a0a0a" />
         </svg>
       </div>
 
@@ -1348,9 +1380,14 @@
       var opacityByVariant = { 0: 1, 1: 0.6, 2: 0.22 };
       // Jerarquía de profundidad: hero grande y lenta (protagonista),
       // dust chica y ágil (textura de fondo), mid en el medio.
-      var sizeRangeByVariant = { 0: [24, 36], 1: [14, 22], 2: [8, 14] };
+      var sizeRangeByVariant = { 0: [20, 28], 1: [13, 19], 2: [8, 13] };
       var cycleRangeByVariant = { 0: [3600, 6000], 1: [2400, 4000], 2: [1400, 2600] };
       var rand = function (min, max) { return Math.random() * (max - min) + min; };
+
+      // Posición + tamaño actuales de cada estrella (px, relativos a la sección),
+      // para poder evitar que dos estrellas terminen encimadas entre sí.
+      var activeStars = [];
+      stars.forEach(function () { activeStars.push(null); });
 
       // ── Muestrea el canal alfa del PNG para saber dónde está "vacío" ──
       var safeFractions = null; // [{x:0-1, y:0-1}, ...] relativo a la imagen
@@ -1390,37 +1427,101 @@
         photoImg.addEventListener('load', buildSafeZones);
       }
 
-      // Convierte una fracción (0-1) dentro de la imagen a % dentro de collage-section
-      function imageFractionToSectionPercent(fx, fy) {
-        var sectionRect = section.getBoundingClientRect();
-        var photoRect = photoImg.getBoundingClientRect();
-        var px = photoRect.left - sectionRect.left + fx * photoRect.width;
-        var py = photoRect.top - sectionRect.top + fy * photoRect.height;
+      // ¿El punto (x,y) con este tamaño se pisa con alguna otra estrella ya
+      // colocada? (todo en px, relativo a la sección)
+      function collidesWithStars(x, y, size, selfIndex) {
+        var r = size / 2 + 5; // +buffer de aire entre estrellas
+        for (var j = 0; j < activeStars.length; j++) {
+          if (j === selfIndex) continue;
+          var o = activeStars[j];
+          if (!o) continue;
+          var dx = (x + size / 2) - o.cx;
+          var dy = (y + size / 2) - o.cy;
+          var minDist = r + o.size / 2 + 5;
+          if (Math.sqrt(dx * dx + dy * dy) < minDist) return true;
+        }
+        return false;
+      }
+
+      // Convierte una fracción (0-1) dentro de la imagen a px dentro de collage-section
+      function imageFractionToSectionPx(fx, fy, sectionRect, photoRect) {
         return {
-          left: (px / sectionRect.width) * 100,
-          top: (py / sectionRect.height) * 100
+          x: photoRect.left - sectionRect.left + fx * photoRect.width,
+          y: photoRect.top - sectionRect.top + fy * photoRect.height
         };
       }
 
-      function pickPosition() {
-        if (safeFractions && safeFractions.length) {
-          var p = safeFractions[Math.floor(rand(0, safeFractions.length))];
-          // pequeño jitter para que no se vea como una grilla
-          var jitter = 1 / 64;
-          var fx = Math.min(1, Math.max(0, p.x + rand(-jitter, jitter)));
-          var fy = Math.min(1, Math.max(0, p.y + rand(-jitter, jitter)));
-          return imageFractionToSectionPercent(fx, fy);
+      function pickPosition(size, isHero, selfIndex) {
+        var sectionRect = section.getBoundingClientRect();
+        var photoRect = photoImg.getBoundingClientRect();
+        var GAP = 10; // separación mínima respecto al borde de la foto (px)
+        var boxLeft = photoRect.left - sectionRect.left - GAP;
+        var boxRight = photoRect.right - sectionRect.left + GAP;
+        var boxTop = photoRect.top - sectionRect.top - GAP;
+        var boxBottom = photoRect.bottom - sectionRect.top + GAP;
+
+        // Zonas "vacías" reales del PNG (si se detectaron): solo se usan para
+        // las estrellas chicas/medianas, nunca para las hero, y siempre se
+        // valida que no choquen con otra estrella activa.
+        if (!isHero && safeFractions && safeFractions.length) {
+          for (var t = 0; t < 8; t++) {
+            var p = safeFractions[Math.floor(rand(0, safeFractions.length))];
+            var jitter = 1 / 64;
+            var fx = Math.min(1, Math.max(0, p.x + rand(-jitter, jitter)));
+            var fy = Math.min(1, Math.max(0, p.y + rand(-jitter, jitter)));
+            var abs = imageFractionToSectionPx(fx, fy, sectionRect, photoRect);
+            var px = Math.min(sectionRect.width - size, Math.max(0, abs.x - size / 2));
+            var py = Math.min(sectionRect.height - size, Math.max(0, abs.y - size / 2));
+            if (!collidesWithStars(px, py, size, selfIndex)) {
+              return finalize(px, py, size, sectionRect, selfIndex);
+            }
+          }
         }
-        // Respaldo: bandas de margen, sin depender del canvas
-        var edge = Math.floor(rand(0, 4));
-        if (edge === 0) return { top: rand(1, 10), left: rand(1, 96) };
-        if (edge === 1) return { top: rand(88, 98), left: rand(1, 96) };
-        if (edge === 2) return { top: rand(10, 88), left: rand(1, 8) };
-        return { top: rand(10, 88), left: rand(90, 97) };
+
+        // Respaldo geométrico: bandas que quedan fuera de la caja de la foto.
+        var bands = [];
+        if (boxTop - size > 4) bands.push('top');
+        if (sectionRect.height - boxBottom - size > 4) bands.push('bottom');
+        if (boxLeft - size > 2) bands.push('left');
+        if (sectionRect.width - boxRight - size > 2) bands.push('right');
+        if (!bands.length) bands.push('top');
+
+        var x, y, tries2 = 0;
+        do {
+          switch (bands[Math.floor(rand(0, bands.length))]) {
+            case 'top':
+              x = rand(2, Math.max(2, sectionRect.width - size - 2));
+              y = rand(2, Math.max(2, boxTop - size));
+              break;
+            case 'bottom':
+              x = rand(2, Math.max(2, sectionRect.width - size - 2));
+              y = rand(Math.min(sectionRect.height - size - 2, boxBottom), sectionRect.height - size - 2);
+              break;
+            case 'left':
+              x = rand(2, Math.max(2, boxLeft - size));
+              y = rand(Math.max(2, boxTop), Math.min(sectionRect.height - size - 2, boxBottom));
+              break;
+            default: // right
+              x = rand(Math.min(sectionRect.width - size - 2, boxRight), sectionRect.width - size - 2);
+              y = rand(Math.max(2, boxTop), Math.min(sectionRect.height - size - 2, boxBottom));
+          }
+          tries2++;
+        } while (collidesWithStars(x, y, size, selfIndex) && tries2 < 8);
+
+        return finalize(x, y, size, sectionRect, selfIndex);
+      }
+
+      function finalize(x, y, size, sectionRect, selfIndex) {
+        activeStars[selfIndex] = { cx: x + size / 2, cy: y + size / 2, size: size };
+        return {
+          top: Math.min(98, Math.max(0, (y / sectionRect.height) * 100)),
+          left: Math.min(98, Math.max(0, (x / sectionRect.width) * 100))
+        };
       }
 
       stars.forEach(function (star, i) {
         var variant = star.getAttribute('data-variant') || '0';
+        var isHero = variant === '0';
         var maxOpacity = opacityByVariant[variant];
         var sizeRange = sizeRangeByVariant[variant] || [12, 32];
         var cycleRange = cycleRangeByVariant[variant] || [2200, 4200];
@@ -1430,10 +1531,11 @@
           star.style.opacity = '0';
           setTimeout(function () {
             // Reubica y cambia tamaño mientras es invisible
-            var pos = pickPosition();
+            var size = rand(sizeRange[0], sizeRange[1]);
+            var pos = pickPosition(size, isHero, i);
             star.style.top = pos.top.toFixed(1) + '%';
             star.style.left = pos.left.toFixed(1) + '%';
-            star.style.width = rand(sizeRange[0], sizeRange[1]).toFixed(0) + 'px';
+            star.style.width = size.toFixed(0) + 'px';
             // Reaparece
             requestAnimationFrame(function () {
               star.style.opacity = String(maxOpacity);
