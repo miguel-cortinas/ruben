@@ -265,18 +265,51 @@
     ═══════════════════════════════════════════════════ */
     .hero-row {
       width: 100%;
-      padding: calc(var(--density) * var(--sp-2)) calc(var(--density) * var(--sp-3));
+      padding: calc(var(--density) * var(--sp-4)) calc(var(--density) * var(--sp-3));
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
+      /* Cada esfera vive en su propio slot elástico (.hero-disco-slot) que
+         reparte el espacio sobrante a cada lado del globo. Al centrarse
+         dentro de ese slot, la esfera queda a mitad de camino entre el
+         borde de la tarjeta y el globo — ni pegada al borde ni encimada
+         al globo — en vez de la superposición tipo "stickers" anterior. */
+      justify-content: center;
+      gap: calc(var(--density) * var(--sp-2));
       background: var(--paper);
       border-bottom: var(--border-thick);
     }
 
+    .hero-disco-slot {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Resplandor suave detrás de cada esfera: la despega del fondo plano
+       y le da una sensación de luz/profundidad "de estudio" en vez de
+       leerse como un recorte PNG pegado sobre el papel. */
+    .hero-disco-glow {
+      position: absolute;
+      width: calc(min(var(--density), 1) * clamp(70px, 22vw, 116px));
+      height: calc(min(var(--density), 1) * clamp(70px, 22vw, 116px));
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 0, 255, 0.16) 0%, rgba(59, 0, 255, 0.07) 45%, rgba(59, 0, 255, 0) 72%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .hero-disco {
-      width: calc(min(var(--density), 1) * clamp(48px, 15vw, 78px));
-      height: calc(min(var(--density), 1) * clamp(48px, 15vw, 78px));
+      width: calc(min(var(--density), 1) * clamp(46px, 14vw, 74px));
+      height: calc(min(var(--density), 1) * clamp(46px, 14vw, 74px));
       flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      /* Misma sombra dura del resto de la tarjeta (fotos, botones, póster)
+         para que no floten como recortes pegados sin peso. */
+      filter: drop-shadow(3px 3px 0 var(--ink));
     }
 
     .hero-disco svg {
@@ -288,6 +321,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
     }
 
     .hero-balloon-img {
@@ -297,6 +333,10 @@
       user-select: none;
       -webkit-user-drag: none;
       pointer-events: none;
+      /* Idem: sombra dura consistente con .photo-centro img y el resto del
+         sistema de sombras — es lo que más faltaba para que se sintiera
+         "de estudio" en vez de una imagen suelta pegada en la página. */
+      filter: drop-shadow(4px 4px 0 var(--ink));
     }
 
     /* ═══════════════════════════════════════════════════
@@ -843,6 +883,52 @@
       animation: popIn 0.7s .1s cubic-bezier(.25, 1.4, .4, 1) both;
     }
 
+    /* Igual que popIn pero fijando la inclinación final de cada esfera
+       disco (ver #discoLeft/#discoRight) — así entran con el mismo golpe
+       "pop" que el globo en vez de solo desvanecer con el resto de la fila,
+       y quedan escalonadas en el tiempo en lugar de moverse en espejo. */
+    @keyframes popInTiltLeft {
+      0% {
+        opacity: 0;
+        transform: scale(0.85) rotate(0deg);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1.03) rotate(-4deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(-4deg);
+      }
+    }
+
+    @keyframes popInTiltRight {
+      0% {
+        opacity: 0;
+        transform: scale(0.85) rotate(0deg);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1.03) rotate(4deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(4deg);
+      }
+    }
+
+    #discoLeft {
+      animation: popInTiltLeft 0.7s .18s cubic-bezier(.25, 1.4, .4, 1) both;
+    }
+
+    #discoRight {
+      animation: popInTiltRight 0.7s .26s cubic-bezier(.25, 1.4, .4, 1) both;
+    }
+
     .header-band-dots span:nth-child(1) {
       animation: dotPulse 1.8s ease-in-out infinite;
     }
@@ -889,12 +975,18 @@
 
     <!-- ░░ HERO ROW — Globo "20" con disco balls ░░ -->
     <div class="hero-row" aria-hidden="true">
-      <div class="hero-disco" id="discoLeft"></div>
+      <div class="hero-disco-slot">
+        <div class="hero-disco-glow"></div>
+        <div class="hero-disco" id="discoLeft"></div>
+      </div>
       <div class="hero-balloon-wrap">
         <img class="hero-balloon-img" src="img/globos.png" alt="Globo número 20" width="1636" height="1351"
           loading="eager">
       </div>
-      <div class="hero-disco" id="discoRight"></div>
+      <div class="hero-disco-slot">
+        <div class="hero-disco-glow"></div>
+        <div class="hero-disco" id="discoRight"></div>
+      </div>
     </div>
 
     <!-- ░░ COLLAGE SECTION ░░ -->
@@ -1230,7 +1322,17 @@
         path: 'img/discoball.json'
       };
       lottie.loadAnimation(Object.assign({ container: document.getElementById('discoLeft') }, config));
-      lottie.loadAnimation(Object.assign({ container: document.getElementById('discoRight') }, config));
+      var rightBall = lottie.loadAnimation(Object.assign({ container: document.getElementById('discoRight') }, config));
+
+      // Arranca la esfera derecha en un punto distinto del ciclo. Girando
+      // ambas desde el mismo frame 0 se ven como una sola imagen duplicada
+      // en espejo; desfasadas leen como dos objetos reales e independientes.
+      if (rightBall) {
+        rightBall.addEventListener('DOMLoaded', function () {
+          var offset = Math.round((rightBall.totalFrames || 160) * 0.4);
+          rightBall.goToAndPlay(offset, true);
+        });
+      }
     });
   </script>
 
