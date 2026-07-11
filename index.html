@@ -78,6 +78,12 @@
     :root {
       color-scheme: light only;
 
+      /* Factor de densidad: 1 = tamaño normal. JS lo reduce solo lo
+         necesario cuando el contenido no entra completo en la altura
+         de la pantalla, para evitar scroll sin dejar huecos laterales
+         (el ancho de la tarjeta nunca cambia, siempre es 100%). */
+      --density: 1;
+
       --ink: #0a0a0a;
       --red: #3B00FF;
       --white: #FFFFFF;
@@ -165,7 +171,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: var(--sp-2);
+      gap: calc(var(--density) * var(--sp-2));
       background: var(--paper);
       z-index: 999;
     }
@@ -227,13 +233,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: var(--sp-2) var(--sp-4);
+      padding: calc(var(--density) * var(--sp-2)) calc(var(--density) * var(--sp-4));
       border-bottom: var(--border-thick);
     }
 
     .header-band-label {
       font-family: var(--font-label);
-      font-size: clamp(10px, 2.8vw, 13px);
+      font-size: calc(min(var(--density), 1) * clamp(10px, 2.8vw, 13px));
       letter-spacing: var(--track-base);
       color: var(--white);
       opacity: 0.9;
@@ -242,7 +248,7 @@
 
     .header-band-dots {
       display: flex;
-      gap: var(--sp-1);
+      gap: calc(var(--density) * var(--sp-1));
     }
 
     .header-band-dots span {
@@ -259,7 +265,7 @@
     ═══════════════════════════════════════════════════ */
     .hero-row {
       width: 100%;
-      padding: var(--sp-2) var(--sp-3);
+      padding: calc(var(--density) * var(--sp-2)) calc(var(--density) * var(--sp-3));
       display: flex;
       align-items: center;
       justify-content: space-evenly;
@@ -268,8 +274,8 @@
     }
 
     .hero-disco {
-      width: clamp(48px, 15vw, 78px);
-      height: clamp(48px, 15vw, 78px);
+      width: calc(min(var(--density), 1) * clamp(48px, 15vw, 78px));
+      height: calc(min(var(--density), 1) * clamp(48px, 15vw, 78px));
       flex-shrink: 0;
     }
 
@@ -287,7 +293,7 @@
     .hero-balloon-img {
       display: block;
       width: auto;
-      height: clamp(60px, 18vw, 92px);
+      height: calc(min(var(--density), 1) * clamp(60px, 18vw, 92px));
       user-select: none;
       -webkit-user-drag: none;
       pointer-events: none;
@@ -303,7 +309,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: var(--sp-3) var(--sp-2) 0;
+      padding: calc(var(--density) * var(--sp-3)) calc(var(--density) * var(--sp-2)) 0;
       border-bottom: var(--border-thick);
       background: var(--paper-2);
     }
@@ -342,7 +348,7 @@
     /* ── Photo positioning: single combined image ── */
     .photo-centro {
       position: relative;
-      width: clamp(290px, 96vw, 418px);
+      width: calc(min(var(--density), 1) * clamp(290px, 96vw, 418px));
       height: auto;
       z-index: 20;
     }
@@ -364,20 +370,20 @@
     .hero-text-section {
       width: 100%;
       background: var(--paper);
-      padding: var(--sp-4) var(--sp-5) 0;
+      padding: calc(var(--density) * var(--sp-4)) calc(var(--density) * var(--sp-5)) 0;
       border-bottom: var(--border-thick);
     }
 
     .its-my-line {
       display: flex;
       align-items: center;
-      gap: var(--sp-3);
+      gap: calc(var(--density) * var(--sp-3));
       margin-bottom: 2px;
     }
 
     .its-my-label {
       font-family: var(--font-label);
-      font-size: clamp(13px, 3.5vw, 17px);
+      font-size: calc(min(var(--density), 1) * clamp(13px, 3.5vw, 17px));
       letter-spacing: var(--track-wide);
       color: var(--ink);
       line-height: 1;
@@ -398,7 +404,10 @@
 
     .birthday-display {
       font-family: var(--font-display);
-      font-size: clamp(62px, 18vw, 98px);
+      /* Este titular ya usa un tope generoso via vw — se permite encoger con
+         la densidad, pero no crecer más allá de su tamaño normal, para
+         evitar que se desborde o se corte horizontalmente. */
+      font-size: calc(min(var(--density), 1) * clamp(62px, 18vw, 98px));
       line-height: 0.88;
       color: var(--ink);
       letter-spacing: -2px;
@@ -412,7 +421,7 @@
       display: flex;
       align-items: center;
       gap: 0;
-      margin-top: var(--sp-3);
+      margin-top: calc(var(--density) * var(--sp-3));
     }
 
     .birthday-underline .bu-thick {
@@ -430,14 +439,14 @@
 
     .subtitle-line {
       font-family: var(--font-body);
-      font-size: clamp(10px, 2.8vw, 12px);
+      font-size: calc(var(--density) * clamp(10px, 2.8vw, 12px));
       font-weight: 500;
       letter-spacing: var(--track-base);
       color: var(--ink);
       text-transform: uppercase;
       opacity: 0.55;
-      margin-top: var(--sp-2);
-      padding-bottom: var(--sp-4);
+      margin-top: calc(var(--density) * var(--sp-2));
+      padding-bottom: calc(var(--density) * var(--sp-4));
     }
 
     /* ═══════════════════════════════════════════════════
@@ -458,21 +467,25 @@
 
     .event-date-main {
       flex: 1;
-      padding: var(--sp-4);
+      /* padding/min-height topados en min(density,1): nunca agrandan la
+         celda más allá de su tamaño base, solo la encogen en pantallas
+         bajas. Así el margen que gana --density al crecer se lo queda
+         todo el texto en vez de repartirse con el padding. */
+      padding: calc(min(var(--density), 1) * var(--sp-4));
       border-right: var(--border);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: var(--sp-2);
-      min-height: 96px;
+      gap: calc(min(var(--density), 1) * var(--sp-2));
+      min-height: calc(min(var(--density), 1) * 96px);
     }
 
     .event-label-row {
       display: flex;
       align-items: center;
-      gap: var(--sp-2);
+      gap: calc(var(--density) * var(--sp-2));
       margin-bottom: 2px;
     }
 
@@ -481,7 +494,7 @@
     .event-address-label,
     .event-dresscode-label {
       font-family: var(--font-label);
-      font-size: clamp(8px, 2.2vw, 10px);
+      font-size: calc(var(--density) * clamp(9px, 2.6vw, 11px));
       letter-spacing: var(--track-base);
       color: var(--ink);
       opacity: 0.45;
@@ -491,11 +504,16 @@
       flex-shrink: 0;
       color: var(--red);
       opacity: 0.8;
+      width: calc(var(--density) * 16px) !important;
+      height: calc(var(--density) * 16px) !important;
     }
 
     .event-date-value {
       font-family: var(--font-display);
-      font-size: clamp(24px, 7.8vw, 36px);
+      /* Techo más alto: antes 36px topaba el crecimiento mucho antes de
+         llenar la celda; el chequeo de ancho en fitDensity() (fits()) sigue
+         evitando que esto desborde en pantallas angostas. */
+      font-size: calc(var(--density) * clamp(28px, 10.5vw, 46px));
       line-height: 0.95;
       color: var(--ink);
       letter-spacing: -1px;
@@ -507,19 +525,19 @@
     }
 
     .event-time-col {
-      padding: var(--sp-4);
+      padding: calc(min(var(--density), 1) * var(--sp-4));
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      gap: var(--sp-2);
+      gap: calc(min(var(--density), 1) * var(--sp-2));
       min-width: clamp(90px, 24vw, 116px);
-      min-height: 96px;
+      min-height: calc(min(var(--density), 1) * 96px);
     }
 
     .event-time-value {
       font-family: var(--font-display);
-      font-size: clamp(22px, 6.5vw, 36px);
+      font-size: calc(var(--density) * clamp(24px, 7.5vw, 40px));
       line-height: 0.9;
       color: var(--red);
       letter-spacing: -0.5px;
@@ -533,41 +551,46 @@
 
     .event-address-col {
       flex: 1;
-      padding: var(--sp-4);
+      padding: calc(min(var(--density), 1) * var(--sp-4));
       border-right: var(--border);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: var(--sp-2);
-      min-height: 92px;
+      gap: calc(min(var(--density), 1) * var(--sp-2));
+      min-height: calc(min(var(--density), 1) * 92px);
     }
 
     .event-address-value {
       font-family: var(--font-body);
-      font-size: clamp(13px, 3.8vw, 17px);
+      font-size: calc(var(--density) * clamp(15px, 4.6vw, 21px));
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.35;
       color: var(--ink);
     }
 
+    /* event-dresscode-col queda más bajo que event-address-col (que carga
+       botón "Abrir mapa"), y align-items:stretch de la fila lo estira a la
+       misma altura — de ahí quedaba mucho aire arriba/abajo de "LLUVIA DE
+       SOBRES". Se compensa agrandando bastante más su texto e ícono para
+       que ocupe mejor ese alto, sin tocar el tamaño de la celda en sí. */
     .event-dresscode-col {
-      padding: var(--sp-4);
+      padding: calc(min(var(--density), 1) * var(--sp-4));
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: var(--sp-2);
+      gap: calc(min(var(--density), 1) * var(--sp-3));
       min-width: clamp(90px, 24vw, 116px);
-      min-height: 92px;
+      min-height: calc(min(var(--density), 1) * 92px);
     }
 
     .event-dresscode-value {
       font-family: var(--font-body);
-      font-size: clamp(13px, 3.4vw, 16px);
+      font-size: calc(var(--density) * clamp(16px, 4.8vw, 21px));
       font-weight: 700;
       color: var(--ink);
-      line-height: 1.3;
+      line-height: 1.15;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -575,17 +598,17 @@
     .btn-maps {
       display: inline-flex;
       align-items: center;
-      gap: var(--sp-2);
+      gap: calc(var(--density) * var(--sp-2));
       background: var(--red);
       color: var(--white);
       font-family: var(--font-label);
-      font-size: clamp(10px, 2.8vw, 12px);
+      font-size: calc(var(--density) * clamp(10px, 2.8vw, 12px));
       letter-spacing: var(--track-tight);
       text-decoration: none;
-      padding: var(--sp-2) var(--sp-4);
+      padding: calc(var(--density) * var(--sp-2)) calc(var(--density) * var(--sp-4));
       border: var(--border);
       box-shadow: var(--sh-sm);
-      margin-top: var(--sp-3);
+      margin-top: calc(var(--density) * var(--sp-3));
       touch-action: manipulation;
       transition: transform 0.15s, box-shadow 0.15s;
     }
@@ -614,13 +637,19 @@
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
-      gap: var(--sp-2);
-      padding: var(--sp-3) var(--sp-4);
+      gap: calc(var(--density) * var(--sp-2));
+      padding: calc(var(--density) * var(--sp-3)) calc(var(--density) * var(--sp-4));
+      /* Cuando JS fija una altura para .poster (porque sobra espacio en la
+         pantalla), este margen automático empuja el footer hasta el borde
+         inferior real de la tarjeta en vez de dejarlo flotando arriba con
+         fondo vacío debajo. Si .poster no tiene altura fija (auto), este
+         margin-top no tiene efecto y todo se comporta como antes. */
+      margin-top: auto;
     }
 
     .footer-name {
       font-family: var(--font-display);
-      font-size: clamp(17px, 5vw, 23px);
+      font-size: calc(min(var(--density), 1) * clamp(17px, 5vw, 23px));
       color: var(--white);
       letter-spacing: -1px;
       line-height: 1;
@@ -646,10 +675,10 @@
       background: var(--red);
       color: var(--white);
       font-family: var(--font-label);
-      font-size: clamp(11px, 3.4vw, 14px);
+      font-size: calc(min(var(--density), 1) * clamp(11px, 3.4vw, 14px));
       letter-spacing: 1.2px;
       text-decoration: none;
-      padding: 10px 20px;
+      padding: calc(var(--density) * 10px) calc(var(--density) * 20px);
       border: 2px solid var(--paper);
       box-shadow: 3px 3px 0 var(--paper);
       touch-action: manipulation;
@@ -687,7 +716,7 @@
 
     .footer-age {
       font-family: var(--font-label);
-      font-size: clamp(9px, 2.5vw, 12px);
+      font-size: calc(min(var(--density), 1) * clamp(9px, 2.5vw, 12px));
       letter-spacing: var(--track-base);
       color: var(--white);
       opacity: 0.5;
@@ -695,7 +724,7 @@
 
     .footer-year {
       font-family: var(--font-display);
-      font-size: clamp(22px, 6.5vw, 34px);
+      font-size: calc(min(var(--density), 1) * clamp(22px, 6.5vw, 34px));
       line-height: 0.9;
       color: var(--red);
       letter-spacing: -1px;
@@ -966,7 +995,8 @@
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
           </div>
-          <div class="event-time-value" style="font-size: clamp(18px, 5.5vw, 28px); line-height: 1.05;">4:00 PM<br><span
+          <div class="event-time-value"
+            style="font-size: calc(var(--density) * clamp(18px, 5.5vw, 28px)); line-height: 1.05;">4:00 PM<br><span
               style="color:var(--ink); opacity:0.5; font-size: 0.65em;">a</span> 10:00 PM</div>
         </div>
       </div>
@@ -1036,26 +1066,155 @@
 
   </main>
 
-  <!-- Revela la invitación con fade-in. La tarjeta llena el 100% del ancho
-       de forma nativa (CSS), sin necesidad de escalarla con JS — así nunca
-       quedan franjas vacías a los lados en ningún tamaño de pantalla. -->
+  <!-- Ajusta la "densidad" (paddings, tipografía, íconos y tamaño del
+       collage) para que la invitación aproveche toda la altura de la
+       pantalla: la encoge si no entra, y la AGRANDA si sobra espacio.
+       El ancho de la tarjeta nunca se toca (siempre 100%), así que nunca
+       aparecen franjas vacías a los lados. Al final fija la altura real
+       de la tarjeta para que el footer (margin-top:auto) quede pegado
+       hasta abajo en vez de dejar fondo vacío debajo. -->
   <script>
     (function () {
+      var root = document.documentElement;
+      var poster = document.querySelector('.poster');
       var loader = document.getElementById('bootLoader');
+      var MIN_DENSITY = 0.62;  // no encoger más allá de esto (legibilidad)
+      var MAX_DENSITY = 1.6;   // techo de crecimiento; el chequeo de ancho en
+      // fits() evita que esto provoque desbordes horizontales
+      var BOTTOM_SAFE_PX = 1;  // colchón mínimo, solo para redondeo de subpíxel
+
+      // visualViewport.height es más fiel que window.innerHeight en móvil
+      // (innerHeight no siempre baja cuando la barra de direcciones está
+      // visible, dejando un resto sin cubrir justo debajo del footer).
+      function viewportHeight() {
+        return (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+      }
 
       function reveal() {
         document.body.classList.add('is-ready');
         if (loader) loader.classList.add('is-hidden');
       }
 
-      if (document.readyState === 'complete') {
-        reveal();
-      } else {
-        window.addEventListener('load', reveal);
+      // ── Espera a que las fuentes reales (Anton/Bebas Neue/Space Grotesk)
+      // terminen de descargar antes de medir nada. Se cargan diferidas
+      // (media="print" -> "all") para no bloquear el render inicial, así que
+      // en 'load' puede que el navegador aún esté pintando con la tipografía
+      // de respaldo. Si fitDensity mide en ese momento, calcula sobre una
+      // altura que va a cambiar en cuanto la fuente real entre — de ahí
+      // quedaba una franja sin recalcular. Forzamos la carga explícita de
+      // cada fuente usada y esperamos el agregado document.fonts.ready.
+      function whenFontsReady(cb) {
+        var done = false;
+        function finish() {
+          if (done) return;
+          done = true;
+          cb();
+        }
+
+        if (document.fonts && document.fonts.ready) {
+          var specs = [
+            '400 16px Anton',
+            '400 16px "Bebas Neue"',
+            '300 16px "Space Grotesk"',
+            '400 16px "Space Grotesk"',
+            '500 16px "Space Grotesk"',
+            '600 16px "Space Grotesk"',
+            '700 16px "Space Grotesk"'
+          ];
+          try {
+            Promise.all(specs.map(function (s) { return document.fonts.load(s); }))
+              .then(function () { return document.fonts.ready; })
+              .then(finish)
+              .catch(finish);
+          } catch (e) {
+            finish();
+          }
+        }
+
+        // Respaldo: navegadores sin Font Loading API, o por si document.fonts.ready
+        // nunca resuelve (ha pasado en algunos motores). No dejamos que esto
+        // cuelgue el reveal indefinidamente.
+        setTimeout(finish, 500);
       }
 
-      // Failsafe: si algo falla, mostrar de todas formas
-      setTimeout(reveal, 1500);
+      // Cabe si entra en el alto disponible Y no desborda el ancho de la
+      // tarjeta. Varios valores (fecha, hora) usan white-space:nowrap, así
+      // que al subir la densidad por encima de 1 hay que vigilar también el
+      // ancho — si no, el texto se recorta en silencio (el body tiene
+      // overflow-x:hidden) en vez de verse.
+      function fits(target) {
+        return poster.offsetHeight <= target && poster.scrollWidth <= poster.clientWidth + 1;
+      }
+
+      function fitDensity() {
+        if (!poster) { reveal(); return; }
+
+        poster.style.height = 'auto';
+        var target = viewportHeight() - BOTTOM_SAFE_PX;
+
+        // Prueba primero al máximo: si ya entra agrandada al máximo, se usa
+        // esa densidad directamente (con margen sobrante, si lo hay, absorbido
+        // por el footer más abajo).
+        root.style.setProperty('--density', MAX_DENSITY.toFixed(3));
+        if (fits(target)) {
+          poster.style.height = target + 'px';
+          reveal();
+          return;
+        }
+
+        // Prueba al mínimo: si ni así entra, se deja al mínimo y como
+        // respaldo aparece scroll (pantalla extremadamente baja).
+        root.style.setProperty('--density', MIN_DENSITY.toFixed(3));
+        if (!fits(target)) {
+          reveal();
+          return;
+        }
+
+        // Búsqueda binaria de la mayor densidad (entre MIN y MAX) que logra
+        // que la tarjeta quepa en el alto disponible sin desbordar a lo ancho.
+        var lo = MIN_DENSITY, hi = MAX_DENSITY;
+        for (var i = 0; i < 14; i++) {
+          var mid = (lo + hi) / 2;
+          root.style.setProperty('--density', mid.toFixed(3));
+          if (fits(target)) {
+            lo = mid;
+          } else {
+            hi = mid;
+          }
+        }
+        root.style.setProperty('--density', lo.toFixed(3));
+        poster.style.height = target + 'px';
+        reveal();
+      }
+
+      function boot() {
+        whenFontsReady(fitDensity);
+      }
+
+      if (document.readyState === 'complete') {
+        boot();
+      } else {
+        window.addEventListener('load', boot);
+      }
+
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(fitDensity, 120);
+      });
+      window.addEventListener('orientationchange', function () {
+        setTimeout(fitDensity, 200);
+      });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(fitDensity, 120);
+        });
+      }
+
+      // Failsafe: si algo falla, mostrar de todas formas. Se estira un poco
+      // respecto al original para dar margen a la espera de fuentes.
+      setTimeout(reveal, 2200);
     })();
   </script>
 
